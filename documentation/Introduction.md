@@ -24,7 +24,9 @@ This is a list of the hardware that we utilized.
 - Samsung SSD 850 EVO 250GB
 - Intel SSDSC2BW120A4 128 GB
 - 12 GB RAM
-- Intel I5-760 Processor
+- Intel Core i5-760 Processor
+
+
 
 Once our server hardware was setup we installed proxmox onto it. We had previously installed a ProxmoxVE iso onto a flash drive. Then we plugged it in and in the bios selected to boot from the flash drive. This brought us into the ProxmoxVE setup and from there we just followed the setup steps. We knew what network was going to be configured and inputted the following
 
@@ -35,7 +37,7 @@ Proxmox Network Setup
 - Gateway: 192.168.20.1
 - DNS Server: 192.168.20.1
 
-We then started the instal and ran into our first problem. During the instal we got this error "Unable to initialize physical volume /dev/sda3". For some reason it was unable to write to our drive. During the setup we chose to install on our Intel SSD. And looking through the bios we could see that the SSD was there and worked correctly. After a quick internet search we discovered that sometimes Proxmox needs to be told to use less than 100% of the drive.
+We then started the install and ran into our first problem. During the install we got this error "Unable to initialize physical volume /dev/sda3". For some reason it was unable to write to our drive. During the setup we chose to install on our Intel SSD. And looking through the bios we could see that the SSD was there and worked correctly. After a quick internet search we discovered that sometimes Proxmox needs to be told to use less than 100% of the drive.
 
 So we reinstalled and during the information we reduced the amount that Proxmox could use to 100GB. And the install went perfectly! And with that, proxmox was installed onto our server and we were ready to start network configuration.
 
