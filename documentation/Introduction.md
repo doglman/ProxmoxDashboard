@@ -16,7 +16,7 @@ Our project is broken into 4 main steps. These steps were used to create easy pa
 
 This documentation will be a log of what we did, how we did it, the problems we ran into, and will be able to lead anyone through making their own Proxmox.
 
-**----- Step 1 -----**
+## Section 1: Hardware Setup and Proxmox Installation
 
 The first part of step 1 was to set up the hardware. Proxmox is a type 1 hypervisor that is ran directly on bare metal, and so we first needed a machine that we could wipe. We debated between running Proxmox in a VM, but decided that it would be more conducive to our project if we made a dedicated proxmox server. This would make it easier to add to a network that would then allow any of us working on the project to SSH into the proxmox server and work on it. 
 
@@ -41,4 +41,16 @@ We then started the install and ran into our first problem. During the install w
 
 So we reinstalled and during the information we reduced the amount that Proxmox could use to 100GB. And the install went perfectly! And with that, proxmox was installed onto our server and we were ready to start network configuration.
 
-**----- Step 2 -----**
+## Section 2: Network Configuration
+After assembling our hardware, we connected it up to Sam's home network. Our server PC was attached to an unmanaged network switch, which was attached to Port 4 on of his router. This router is the Ubiquity Dream Machine (UDR) running UniFi OS v3.1.16. The following configuration was done using that router's tools. 
+
+| Interface Connection | Server Configuration |
+|---|---|
+| ![](./network_connection_1.jpg)  | ![](./network_connection_2.jpg) |
+
+### Creating a VLAN
+
+### Firewalls
+
+### VPN configuration
+
