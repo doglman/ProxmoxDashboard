@@ -26,7 +26,9 @@ This is a list of the hardware that we utilized.
 - 12 GB RAM
 - Intel Core i5-760 Processor
 
+<img src="./hardware_config.jpg" width=250em />
 
+Two SSDs were used in order to have Proxmox installed on one of the SSDs and to have the VMs installed on the other.
 
 Once our server hardware was setup we installed proxmox onto it. We had previously installed a ProxmoxVE iso onto a flash drive. Then we plugged it in and in the bios selected to boot from the flash drive. This brought us into the ProxmoxVE setup and from there we just followed the setup steps. We knew what network was going to be configured and inputted the following
 
