@@ -1,7 +1,6 @@
-Final Project: Sam Swindler, Benj McKinnon, Jensen Wood, Spencer Baird
+# Resource Monitoring Dashboard for Data Center Infrastructure - Proxmox
 
-Project:
-Resource Monitoring Dashboard for Data Center Infrastructure - Proxmox
+Final Project: Sam Swindler, Benj McKinnon, Jensen Wood, Spencer Baird
 
 Goal:
 Create a web-based Resource Monitoring Dashboard with user authentication, real-time data visualization, and alerting capabilities to monitor computer resources. This dashboard will offer a comprehensive overview of data center infrastructure VM status and performance metrics from Proxmox. Users will be able to manage resources efficiently, provision and de-provision VMs, and receive notifications for critical events.
