@@ -81,3 +81,24 @@ We did this by going to Settings > Application Firewall > Firewall Rules and cli
 This step was repeated for the second VLAN on Sam's network (VLAN 2, which is dedicated for IoT devices).
 
 We verified our firewall has been configured correctly by attempting to ping a device on Sam's home network from the Proxmox server. From within Proxmox, if you select the server itself (ours is labeled "pve"), there is a "Console" button in the top-right of the page. This opens a root console that we sent ping commands from.
+
+
+## Section 3: Initial Proxmox Configuration
+Proxmox provides a website for us to configure it from. On boot, the host computer should print out the IP address needed to visit this configuration page. Ours was found at `https://192.168.20.2:8006`
+
+We need to configure our Proxmox instance to take advantage of the second SSD that we installed. This can be done by following these steps:
+[source - step 7](https://forum.proxmox.com/threads/proxmox-beginner-tutorial-how-to-set-up-your-first-virtual-machine-on-a-secondary-hard-disk.59559/).
+1. Log into Proxmox
+2. Navigate to "Datacenter" > "pve" > "Disks" > "LVM" (expand the arrow under "Disks"). 
+3. Click "Create Volume Group". We selected our Samsung SSD, gave it an appropriate name, and clicked "Create"
+
+![](./Proxmox_2nd_Disk_Config.png)
+
+To create our first VM, we need to provide an installation ISO. We could download a copy to our personal machines and re-upload them to Proxmox through the web portal. In order to save time, we opted to instead directly download the ISO to Proxmox. ([source](https://www.servethehome.com/directly-download-an-iso-to-proxmox-ve-for-vm-creation/))
+1. In the Proxmox web console, click "pve" > "shell". This should open a second window with a shell controlling a proxmox instance.
+2. Change to the directory where Proxmox looks for ISOs by executing `cd /var/lib/vz/template/iso/`
+3. `wget` the ISO you want to download, using the download URL. In our case, we did `wget https://releases.ubuntu.com/22.04.3/ubuntu-22.04.3-live-server-amd64.iso`
+
+![](./Proxmox_ISO_directDownload.png)
+
+We repeated this step for several other ISOs to give us some VMs for our web interface to provision and manage.
