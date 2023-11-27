@@ -42,7 +42,7 @@ We then started the install and ran into our first problem. During the install w
 
 So we reinstalled and during the information we reduced the amount that Proxmox could use to 100GB. And the install went perfectly! And with that, proxmox was installed onto our server and we were ready to start network configuration.
 
-## Section 2: Network Configuration
+## Section 2: Initial Network Configuration
 After assembling our hardware, we connected it up to Sam's home network. Our server PC was attached to an unmanaged network switch, which was attached to Port 4 on of his router. This router is the Ubiquity UniFi Dream Machine (UDM) running UniFi OS v3.1.16. The following configuration was done using that router's tools. 
 
 | Interface Connection | Server Configuration |
@@ -64,14 +64,14 @@ After creating the VLAN, we needed to associate it with a specific ethernet inte
 
 After doing this, we found that we were able to connect to the Proxmox server from devices on Sam's network. 
 
-### VPN configuration
+### Setting up VPN access
 Now that we have connection to the Proxmox server within Sam's home network, we needed to create secure access to this server for the other members of the group. We used the UniFi Dream Machine's built-in Wireguard VPN server to do this. This was configured by navigating to: Settings > Teleport & VPN > VPN Server and clicking "Create New". We then filled out the necessary fields (depicted below) and created an individual set of credentials for each of our team members. As we created credentials for each team member, we downloaded the corresponding credentials file to import into Wireguard.
 
 The Wireguard VPN client can be downloaded [here](https://www.wireguard.com/). Be aware that the download page for this VPN may be blocked on BYU networks.
 
 ![](./VPN_config_1.png)
 
-### Firewall Configuration
+### Router Firewall Configuration
 The web dashboard that is being hosted on the Proxmox server will eventually be exposed to the internet. In case our server is compromised, we'd like to prevent it from spreading to other device's on Sam's network. We will achieve this by setting some firewall rules that prevent any connection from the "IT 344 Server" (VLAN3) network being initiated to a destination on Sam's other VLANs.
 
 We did this by going to Settings > Application Firewall > Firewall Rules and clicking "Create Entry". Then we followed the directions from [this article](https://technotim.live/posts/vlan-firewall-unifi/#configuring-firewall-rule), setting the values as shown below:
