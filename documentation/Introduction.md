@@ -102,3 +102,70 @@ To create our first VM, we need to provide an installation ISO. We could downloa
 ![](./Proxmox_ISO_directDownload.png)
 
 We repeated this step for several other ISOs to give us some VMs for our web interface to provision and manage.
+
+
+## Section 4: Setting up our development environment
+We'd like to set up two separate virtual machines (VMs). The first will serve as a development environment, where we can write and test the code without affecting anyone using the dashboard. The second will be our production environment, meant to be public-facing to users. In this section we will create our development environment.
+
+To create our first virtual machine:
+[source - step 8](https://forum.proxmox.com/threads/proxmox-beginner-tutorial-how-to-set-up-your-first-virtual-machine-on-a-secondary-hard-disk.59559/).
+1. Navigate to "PVE" in the left sidebar.
+2. Click "Create VM" in top-right corner of the screen. This shows a VM creation form. Any fields not explicitly mentioned below can be left to their defaults.
+3. In "General", we named this machine `Dashboard-DEV`
+4. In "OS" we selected the Ubuntu Live server ISO we downloaded to Proxmox in Section 3
+5. In "Disks" we made sure our second SSD we set up in Section 3 is selected as our 'Storage'. We didn't anticipate needing more than 32 GB of disk storage for this VM, so we left that as a default, but this could be adjusted as needed.
+6. In "CPU" we gave our VM 2 cpu cores. Since we are using an older processor that doesn't have AES hardware support, we had to change the CPU type to `x86-64-v2`. 
+7. In "Memory" we gave our VM 4 GB (4096 MB) of RAM to work with.
+8. Then we finished the form, allowing Promox to create our VM.
+
+Then we proceed with installing our Ubuntu server:
+1. Start the VM by selecting it in the left sidebar and clicking "Start" in the top-right corner.
+2. Open a remote console to interact with the VM by clicking "Console" in the top-right corner.
+3. Go through the various steps of the Ubuntu installer. Here are the notable setting we set for our installation:
+    - When prompted, we updated to the new installer
+    - We chose the default "Ubuntu Server" as the base for our installation.
+    - We manually configured the network IPv4 connection:
+        - Subnet: `192.168.20.0/24`
+        - Address: `192.168.20.3`
+        - Gateway: `192.168.20.1`
+        - Name servers: `192.168.20.1`
+        - Search domain: (blank)
+    - Our mirror location passed tests, which indicates our network was successfully configured
+    - We let the installer perform its default storage configuration of "Use an entire disk"
+    - In the profile setup screen, we set:
+        - Your name: `dev`
+        - Your servers name: `dashbard-dev`
+        - Pick a username: `dev`
+        - Pick a password: (we provided a password.)
+    - We did not install an SSH server
+    - We did not install any of the featured snaps
+4. We then reboot the machine, hitting 'enter' to exit the installer. Once it has restarted and we are logged in, we acquired and installed updates by doing `sudo apt update` and `sudo apt upgrade`. Then we reboot the machine again with `sudo reboot`
+5. (Optional) We also installed and enabled the "qemu-guest-agent" to make it easier for our machine to interact with Proxmox:
+    - In the Proxmox Web console: 
+        - Select the machine in the left sidebar
+        - Click "options"
+        - Double click "QEMU Guest Agent"
+        - Enable the guest agent
+    - On the machine:
+        ```bash
+            sudo apt install qemu-guest-agent
+            shutdown -h now # Necessary to get Proxmox settings to not be orange on the web console.
+            # (turn the machine back on again)
+            sudo systemctl status qemu-guest-agent # If the machine doesn't report running, try the following commands:
+            # sudo systemctl start qemu-guest-agent
+            # sudo systemctl enable qemu-guest-agent
+        ```
+    - See also:
+        - [Proxmox VE Wiki](https://pve.proxmox.com/wiki/Qemu-guest-agent)
+        - ["Dependency failed error"](https://forum.proxmox.com/threads/dependency-failed-for-qemu-guest-agent.75797/)
+
+# Appendix
+Part of our design comes from IT&C 210 Labs 1 - 3. We acknowledge Brandt Redd as the provider of those labs.
+
+**IP Address Reference Table**
+
+| IP          | Description                      |
+|-------------|----------------------------------|
+|192.168.20.2 | Proxmox VE - Login on Port 8006  |
+|192.168.20.3 | Ubuntu - Development Server      |
+|192.168.3.5  | VPN - Sam                        |
