@@ -107,6 +107,7 @@ We repeated this step for several other ISOs to give us some VMs for our web int
 ## Section 4: Setting up our development environment
 We'd like to set up two separate virtual machines (VMs). The first will serve as a development environment, where we can write and test the code without affecting anyone using the dashboard. The second will be our production environment, meant to be public-facing to users. In this section we will create our development environment.
 
+### Create our the Virtual Machine
 To create our first virtual machine:
 [source - step 8](https://forum.proxmox.com/threads/proxmox-beginner-tutorial-how-to-set-up-your-first-virtual-machine-on-a-secondary-hard-disk.59559/).
 1. Navigate to "PVE" in the left sidebar.
@@ -118,6 +119,7 @@ To create our first virtual machine:
 7. In "Memory" we gave our VM 4 GB (4096 MB) of RAM to work with.
 8. Then we finished the form, allowing Promox to create our VM.
 
+### Install OS: Ubuntu Server
 Then we proceed with installing our Ubuntu server:
 1. Start the VM by selecting it in the left sidebar and clicking "Start" in the top-right corner.
 2. Open a remote console to interact with the VM by clicking "Console" in the top-right corner.
@@ -159,6 +161,7 @@ Then we proceed with installing our Ubuntu server:
         - [Proxmox VE Wiki](https://pve.proxmox.com/wiki/Qemu-guest-agent)
         - ["Dependency failed error"](https://forum.proxmox.com/threads/dependency-failed-for-qemu-guest-agent.75797/)
 
+### Installing Web tech
 Then we install and set up the components we will need for our website. Our design is a traditional LAMP stack (Linux Apache MySQL PHP).
 1. Install and configure apache2
 ```bash
@@ -168,33 +171,73 @@ sudo service apache2 status # Should indicate "active (running)"
 ```
 
 - We can further verify the site is working by navigating to the IP address of our machine in a web browser (in our case, `192.168.20.3`). It should show the Apache2 Default Page.
+- We'd like to keep all of our source code in one repository, but we also need to let apache read and utilize the code we write. This can be achieved by creating a "symbolic link" between our code repository and the `/var/www/` folder. To do this:
+    <!-- IT&C 210 Lab 1a section "Clone your code"-->
+    1. Set up a repository on Github
+    2. Create an `index.html` file that can serve as a "hello world" of sorts and put it inside of a folder in our repo. We put ours in `/src/dashboard/`
+    3. Navigate to the Apache WebRoot folder with `cd /var/www`
+    4. Make the current user (our `dev` user) the owner of this folder so they can freely modify it's contents with `sudo chown -R $USER . && sudo chgrp -R $USER .`
+    5. Delete the current HTML folder `rm -rf html`
+    6. Clone that repository down to the VM with `git clone [URL-of-repo]`, so it is stored in `/var/www/`. NOTE: You cannot clone the repo into your Home folder. This caused issues for us, probably because the Home folder is encrypted and cannot be accessed by the apache service, according to [this source](https://stackoverflow.com/a/39037942)
+    7. Create a "symbolic link" in `/var/www` that points to the `/src/dashboard` folder of our repository with `ln -s ~/ProxmoxDashboard/src/dashboard html`. This creates the necessary shortcut that Apache will follow when it tries to access `/var/www/html`. 
 - Apache comes with a default configuration file:`/etc/apache2/sites-available/000-default.conf`. We are going to make a copy of this config, modify it for our needs, and then enable it in apache.
-<!-- IT210 Lab 1a, section "Change Default Config"-->
-
-```bash
-cd /etc/apache2/sites-available
-sudo cp 000-default.conf it210_lab.conf
-
-```
-TODO - ABOVE CODE BLOCK IS INCOMPLETE
+    <!-- IT210 Lab 1a, section "Change Default Config"-->
+    1. Execute the following commands to navigate to the folder, create a copy of the default config file, and begin editing it.
+    ```bash
+    cd /etc/apache2/sites-available
+    sudo cp 000-default.conf dashboard.conf
+    sudo nano dashboard.conf # Opens up a text editor
+    ```
+    2. We added the following lines inside the `<VirtualHost>` tags:
+    ```
+    <Directory /var/www/html>
+        Options -Indexes
+    </Directory
+    ```
+    <!-- Based on https://linuxconfig.org/turn-off-directory-browsing-on-apache -->
+    3. Once you saved your code and closed the editor, disable the default site and enable the new configuration with the following commands:
+    ```bash
+    sudo a2dissite 000-default.conf
+    sudo a2ensite it210_lab.conf    
+    # If it says to reload apache, do so:
+    sudo systemctl reload apache2
+    ```
 
 2. Install the remainder of the LAMP stack (so PHP, MariaDB, and phpMyAdmin)
     - PHP will help us create an interactive website
     - MariaDB will be the database we use for holding login information
     - phpMyAdmin will be the web console for managing our MariaDB.
     ```bash
-    sudo apt install -y php-mbstring php-zip php-gd php-json php-curl mariadb-server phpmyadmin
+    sudo apt install -y php-mbstring php-zip php-gd php-json php-curl libapache2-mod-php mariadb-server phpmyadmin
     ```
+    <!-- In "Known Issues" it mentions I was missing `libapache2-mod-php` https://github.com/phpmyadmin/phpmyadmin/wiki/DebianUbuntu -->
     - When prompted about which web server to use for `phpMyAdmin`, press space to select apache2 (so the screen reads `[*] apache2`) and tab to select "ok".
     - When prompted about installing a database for `phpMyAdmin`, choose `<Yes>`.
     - When prompted about providing a password for `phpMyAdmin` to register with the database server, leave the field blank and press "enter".
 <!-- https://github.com/BYU-ITC-210-Archive/lab-3a-doglman/tree/master/instructions -->
-3. Configure `phpMyAdmin` with a username and password.
-```bash
-sudo mariadb
-CREATE USER 'developer' IDENTIFIED BY '<password>'; # replace <password> with your own password. Remove the "<" ">" brackets but keep the quotes.
-```
-TODO - ABOVE CODE BLOCK IS INCOMPLETE
+3. Configure the database used by `phpMyAdmin` with a username and password. Enter the database with `sudo mariadb`
+    ```sql
+    CREATE USER 'developer' IDENTIFIED BY '<password>'; --replace <password> with your own password. Remove the "<" ">" brackets but keep the quotes.
+    CREATE DATABASE dashboard;
+    GRANT ALL ON dashboard.* TO 'developer';
+    FLUSH PRIVELEGES;
+    EXIT;
+    ```
+    - You should be able to log into PHPMyadmin by navigating to the `/phpmyadmin` resource of your VM. So for us, we went to `http://192.168.20.3/phpmyadmin/` in our web browsers.
+    - We need to create a table inside our database to hold user information. We will do this by:
+        <!-- Step 5 of https://github.com/BYU-ITC-210-Archive/lab-3a-doglman/tree/master/instructions#development-environment-personal-computer-or-lab-computer-->
+        1. Log into phpMyAdmin with the credentials we set up earlier (i.e. the username `developer`)
+        2. Locate the database in the left-column that we created called `dashboard`
+        3. Create a new table called "user" in the database with 4 columns
+        4. Add the following fields:
+
+        | Name        | Type      | Length/Values  | Default         | Index   | A_I |  ...  |
+        | ----------- | --------- | -------------- | --------------- | ------- | --- | ----- |
+        | `id`        | `INT`     |                | ...             | Primary |  ☒  |  ...  |
+        | `username`  | `VARCHAR` | `255`          | ...             | Unique  |  ☐  |  ...  |
+        | `password`  | `VARCHAR` | `255`          | ...             | ...     |  ☐  |  ...  |
+        | `logged_in` | `BOOLEAN` |                | `As defined: 0` | ...     |  ☐  |  ...  |
+4. TODO - STILL NEED TO "SOURCE THIS FILE" ACCORDING TO LAB 3 INSTRUCTIONS Now we need to provide these credentials to apache, so that it can modify the database as users create accounts and log in.
 
 # Appendix
 Part of our design comes from IT&C 210 Labs 1 - 3. We acknowledge Brandt Redd as the provider of those labs.
