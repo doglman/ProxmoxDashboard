@@ -159,6 +159,43 @@ Then we proceed with installing our Ubuntu server:
         - [Proxmox VE Wiki](https://pve.proxmox.com/wiki/Qemu-guest-agent)
         - ["Dependency failed error"](https://forum.proxmox.com/threads/dependency-failed-for-qemu-guest-agent.75797/)
 
+Then we install and set up the components we will need for our website. Our design is a traditional LAMP stack (Linux Apache MySQL PHP).
+1. Install and configure apache2
+```bash
+sudo apt install apache2
+sudo service apache2 start
+sudo service apache2 status # Should indicate "active (running)"
+```
+
+- We can further verify the site is working by navigating to the IP address of our machine in a web browser (in our case, `192.168.20.3`). It should show the Apache2 Default Page.
+- Apache comes with a default configuration file:`/etc/apache2/sites-available/000-default.conf`. We are going to make a copy of this config, modify it for our needs, and then enable it in apache.
+<!-- IT210 Lab 1a, section "Change Default Config"-->
+
+```bash
+cd /etc/apache2/sites-available
+sudo cp 000-default.conf it210_lab.conf
+
+```
+TODO - ABOVE CODE BLOCK IS INCOMPLETE
+
+2. Install the remainder of the LAMP stack (so PHP, MariaDB, and phpMyAdmin)
+    - PHP will help us create an interactive website
+    - MariaDB will be the database we use for holding login information
+    - phpMyAdmin will be the web console for managing our MariaDB.
+    ```bash
+    sudo apt install -y php-mbstring php-zip php-gd php-json php-curl mariadb-server phpmyadmin
+    ```
+    - When prompted about which web server to use for `phpMyAdmin`, press space to select apache2 (so the screen reads `[*] apache2`) and tab to select "ok".
+    - When prompted about installing a database for `phpMyAdmin`, choose `<Yes>`.
+    - When prompted about providing a password for `phpMyAdmin` to register with the database server, leave the field blank and press "enter".
+<!-- https://github.com/BYU-ITC-210-Archive/lab-3a-doglman/tree/master/instructions -->
+3. Configure `phpMyAdmin` with a username and password.
+```bash
+sudo mariadb
+CREATE USER 'developer' IDENTIFIED BY '<password>'; # replace <password> with your own password. Remove the "<" ">" brackets but keep the quotes.
+```
+TODO - ABOVE CODE BLOCK IS INCOMPLETE
+
 # Appendix
 Part of our design comes from IT&C 210 Labs 1 - 3. We acknowledge Brandt Redd as the provider of those labs.
 
