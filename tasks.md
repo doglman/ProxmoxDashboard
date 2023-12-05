@@ -10,8 +10,9 @@
     - [ ] Configure Fail2Ban to block excessive/unusual activity on port 80
         - [ ] Configure Port forwarding on my network to forward requests on port 80 to the VM
     - [ ] Set up alerting (script that monitors Proxmox API and send emails)
-    - [ ] Install a MariaDB for holding account info
-        - [ ] Set up user authentication
+    - [X] Install a MariaDB for holding account info
+        - [x] Set up user authentication
+            - [ ] Add links to the login screen to go to the register screen?
     - [ ] Set up SSH on the server
 - [x] Set up some VMs for the API to control/monitor
     - [x] Kali?
