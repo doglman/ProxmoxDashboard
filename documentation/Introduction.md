@@ -107,6 +107,7 @@ We repeated this step for several other ISOs to give us some VMs for our web int
 ## Section 4: Setting up our development environment
 We'd like to set up two separate virtual machines (VMs). The first will serve as a development environment, where we can write and test the code without affecting anyone using the dashboard. The second will be our production environment, meant to be public-facing to users. In this section we will create our development environment.
 
+### Create our the Virtual Machine
 To create our first virtual machine:
 [source - step 8](https://forum.proxmox.com/threads/proxmox-beginner-tutorial-how-to-set-up-your-first-virtual-machine-on-a-secondary-hard-disk.59559/).
 1. Navigate to "PVE" in the left sidebar.
@@ -118,6 +119,7 @@ To create our first virtual machine:
 7. In "Memory" we gave our VM 4 GB (4096 MB) of RAM to work with.
 8. Then we finished the form, allowing Promox to create our VM.
 
+### Install OS: Ubuntu Server
 Then we proceed with installing our Ubuntu server:
 1. Start the VM by selecting it in the left sidebar and clicking "Start" in the top-right corner.
 2. Open a remote console to interact with the VM by clicking "Console" in the top-right corner.
@@ -159,6 +161,7 @@ Then we proceed with installing our Ubuntu server:
         - [Proxmox VE Wiki](https://pve.proxmox.com/wiki/Qemu-guest-agent)
         - ["Dependency failed error"](https://forum.proxmox.com/threads/dependency-failed-for-qemu-guest-agent.75797/)
 
+### Installing Web tech
 Then we install and set up the components we will need for our website. Our design is a traditional LAMP stack (Linux Apache MySQL PHP).
 1. Install and configure apache2
 ```bash
