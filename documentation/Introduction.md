@@ -239,6 +239,14 @@ sudo service apache2 status # Should indicate "active (running)"
         | `logged_in` | `BOOLEAN` |                | `As defined: 0` | ...     |  ☐  |  ...  |
 4. TODO - STILL NEED TO "SOURCE THIS FILE" ACCORDING TO LAB 3 INSTRUCTIONS Now we need to provide these credentials to apache, so that it can modify the database as users create accounts and log in.
 
+<!-- I finally got the sourcing working. I was missing a line in my .env file. I was able to diagnose by through the following commands:
+
+`tail -f /var/log/apache2/error.log` # Showed PHP errors
+Going to the `http://192.168.20.3/actions/health_check.php` 
+-->
+
+<!-- I created a test account and it worked either way so sweet.-->
+
 # Appendix
 Part of our design comes from IT&C 210 Labs 1 - 3. We acknowledge Brandt Redd as the provider of those labs.
 
