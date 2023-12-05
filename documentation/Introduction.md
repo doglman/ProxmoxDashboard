@@ -247,6 +247,12 @@ Going to the `http://192.168.20.3/actions/health_check.php`
 
 <!-- I created a test account and it worked either way so sweet.-->
 
+
+
+<br><br><br><br><br><br>
+<h1>Setting up a Virtual Machine</h1>
+An important next step is to have something for our Proxmox to actually monitor. So we set up a Kali VM using our Kali ISO from class. 
+
 # Appendix
 Part of our design comes from IT&C 210 Labs 1 - 3. We acknowledge Brandt Redd as the provider of those labs.
 
