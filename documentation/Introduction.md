@@ -239,6 +239,15 @@ sudo service apache2 status # Should indicate "active (running)"
         | `logged_in` | `BOOLEAN` |                | `As defined: 0` | ...     |  ☐  |  ...  |
 4. TODO - STILL NEED TO "SOURCE THIS FILE" ACCORDING TO LAB 3 INSTRUCTIONS Now we need to provide these credentials to apache, so that it can modify the database as users create accounts and log in.
 
+
+
+
+
+
+<br><br><br><br><br><br>
+<h1>Setting up a Virtual Machine</h1>
+An important next step is to have something for our Proxmox to actually monitor. So we set up a Kali VM using our Kali ISO from class. 
+
 # Appendix
 Part of our design comes from IT&C 210 Labs 1 - 3. We acknowledge Brandt Redd as the provider of those labs.
 
