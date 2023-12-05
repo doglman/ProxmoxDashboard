@@ -1,0 +1,18 @@
+- [x] Configure a secondary disk in Proxmox
+- [ ] Set up a VM (development environment)
+- [ ] Install a VM Operating System (production environment)
+    - [ ] Decide on what web server (PHP?)
+        - [ ] Provision/Management page (calls Proxmox API to create/destroy VMs)
+        - [ ] Install Graphana
+            - [ ] Set up Proxmox visualization
+            - [ ] Graphana page
+                - Snapshots look like the way to go for embedding an `<iframe>` https://grafana.com/blog/2023/10/10/how-to-embed-grafana-dashboards-into-web-applications/#snapshot
+    - [ ] Configure Fail2Ban to block excessive/unusual activity on port 80
+        - [ ] Configure Port forwarding on my network to forward requests on port 80 to the VM
+    - [ ] Set up alerting (script that monitors Proxmox API and send emails)
+    - [ ] Install a MariaDB for holding account info
+        - [ ] Set up user authentication
+- [ ] Set up some VMs for the API to control/monitor
+    - [ ] Minecraft server
+    - [ ] Kali?
+    - [ ] BOINC?
