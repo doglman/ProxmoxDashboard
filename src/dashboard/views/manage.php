@@ -23,7 +23,7 @@ if (!array_key_exists('logged_in', $_SESSION)) {
 
 <body>
   <nav>
-      <a href="views/manage.php">Manage Datacenter</a> | <a href="actions/logout_action.php"> LOGOUT </a>
+      <a href="../index.php">Manage Datacenter</a> | <a href="actions/logout_action.php"> LOGOUT </a>
   </nav>
   <h1>Datacenter Management</h1>
   <p> -- Build management buttons here -- </p>
