@@ -1,7 +1,7 @@
 - [x] Configure a secondary disk in Proxmox
-- [ ] Set up a VM (development environment)
-- [ ] Install a VM Operating System (production environment)
-    - [ ] Decide on what web server (PHP?)
+- [x] Set up a VM (development environment)
+- [x] Install a VM Operating System (production environment)
+    - [x] Decide on what web server (PHP?)
         - [ ] Provision/Management page (calls Proxmox API to create/destroy VMs)
         - [ ] Install Graphana
             - [ ] Set up Proxmox visualization
@@ -10,9 +10,10 @@
     - [ ] Configure Fail2Ban to block excessive/unusual activity on port 80
         - [ ] Configure Port forwarding on my network to forward requests on port 80 to the VM
     - [ ] Set up alerting (script that monitors Proxmox API and send emails)
-    - [ ] Install a MariaDB for holding account info
-        - [ ] Set up user authentication
-- [ ] Set up some VMs for the API to control/monitor
-    - [ ] Minecraft server
-    - [ ] Kali?
-    - [ ] BOINC?
+    - [X] Install a MariaDB for holding account info
+        - [x] Set up user authentication
+            - [ ] Add links to the login screen to go to the register screen?
+    - [ ] Set up SSH on the server
+- [x] Set up some VMs for the API to control/monitor
+    - [x] Kali?
+    - [ ] BOINC? meh        
