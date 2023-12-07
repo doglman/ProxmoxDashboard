@@ -1,3 +1,19 @@
+## Project Description
+(in check-box and bullet-list form)
+Create a web based [ ] Resource Monitoring Dashboard with:
+- [ ] User authentication
+- [ ] Real-time data visualization
+- [ ] Alerting capabilities
+to monitor computer resources. This dashboard will offer a comprehensive overview of:
+- [ ] Data center infrastructure
+- [ ] VM Status
+- [ ] Performance metrics
+Users will be able to:
+- [ ] Manage resources efficiently
+- [ ] Provision and de-provision VMs
+- [ ] Receive notifications for critical events
+
+## Tasks
 - [x] Install a VM Operating System (production environment)
     - [x] Decide on what web server (PHP?)
         - [ ] Provision/Management page (calls Proxmox API to create/destroy VMs)
