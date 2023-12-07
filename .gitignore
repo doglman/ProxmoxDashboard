@@ -1,3 +1,10 @@
+/src/dashboard/.env
 secrets.txt
 
+src/dashboard/vendor/*
+src/dashboard/composer.lock
+src/dashboard/composer.phar
+
+
 .vscode
+

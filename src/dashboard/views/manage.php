@@ -8,6 +8,24 @@ if (!array_key_exists('logged_in', $_SESSION)) {
   die();
 }
 
+// Set up the Proxmox API libraries
+require_once '../vendor/autoload.php';
+//require __DIR__ . '/vendor/autoload.php';
+
+use ProxmoxVE\Proxmox;
+
+$credentials = [
+	'hostname' => '192.168.20.2',
+	'username' => 'root',
+	'password' => '', //TODO
+];
+
+//$proxmox = new Proxmox($credentials);
+
+//$allNodes = $proxmox->get('/nodes');
+
+//print_r($allNodes);
+
 ?>
 
 <!DOCTYPE html>
