@@ -25,7 +25,9 @@ if (!array_key_exists('logged_in', $_SESSION)) {
       <a href="views/manage.php">Manage Datacenter</a> | <a href="actions/logout_action.php"> LOGOUT </a>
   </nav>
   <h1>Datacenter Dashboard</h1>
-  <p> -- insert Graphana dashboard here -- </p>
+  <div id="dashboard-container">
+    <iframe id="dashboard-iframe" src="http://192.168.20.3:3000/d/kxQQuHRZk/proxmox-dashboard?orgId=1&amp;refresh=10s&amp;theme=light&amp;kiosk" allowfullscreen></iframe>
+  </div>
 
 </body>
 
