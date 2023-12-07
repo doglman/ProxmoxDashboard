@@ -237,7 +237,7 @@ sudo service apache2 status # Should indicate "active (running)"
         | `username`  | `VARCHAR` | `255`          | ...             | Unique  |  ☐  |  ...  |
         | `password`  | `VARCHAR` | `255`          | ...             | ...     |  ☐  |  ...  |
         | `logged_in` | `BOOLEAN` |                | `As defined: 0` | ...     |  ☐  |  ...  |
-4. Now we need to provide these credentials to apache, so that it can modify the database as users create accounts and log in. We did this by creating a `.env` file in our project's folders with the following contents:
+4. Now we need to provide these credentials to apache, so that it can modify the MariaDB database as users create accounts and log in. We did this by creating a `.env` file in our project's folders with the following contents:
 ```env
 export MYSQL_SERVERNAME=localhost
 export MYSQL_USER=developer
@@ -247,12 +247,11 @@ export MYSQL_DATABASE=dashboard
     - We then created an entry in the apache configuration so it knows about these variables. We did this by executing the `apache2_env_setup.sh` script that is included in this repository, in the same folder as where the `.env` file is stored.
     - In case you run into any issues after this step, we used the following resources to diagnose:
         - We can view any PHP errors encountered by apache by executing the command `tail -f /var/log/apache2/error.log`
-<!-- I finally got the sourcing working. I was missing a line in my .env file. I was able to diagnose by through the following commands:
-Going to the `http://192.168.20.3/actions/health_check.php` 
--->
-TODO - STILL NEED TO "SOURCE THIS FILE" ACCORDING TO LAB 3 INSTRUCTIONS 
-
-<!-- I created a test account and it worked either way so sweet.-->
+        - We can view if Apache/PHP can read those variables and connect to our database by using the `health_check.php` file in our repository. So for our setup, we could navigate to `http://192.168.20.3/actions/health_check.php` 
+5. After restarting Apache wth `sudo service apache2 restart`, we are now able to register users and log into the website with the PHP code from our repository. Here are some of the implemented URLs:
+    - http://192.168.20.3/ (main screen. Redirects to login if a user isn't logged in)
+    - http://192.168.20.3/views/login.php
+    - http://192.168.20.3/views/register.php
 
 
 
