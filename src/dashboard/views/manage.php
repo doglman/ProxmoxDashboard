@@ -14,15 +14,17 @@ require_once '../vendor/autoload.php';
 
 use ProxmoxVE\Proxmox;
 
+$password = getenv("PROXMOX_PASSWORD");
+
 $credentials = [
 	'hostname' => '192.168.20.2',
 	'username' => 'root',
-	'password' => '', //TODO
+	'password' => $password,
 ];
 
-//$proxmox = new Proxmox($credentials);
+$proxmox = new Proxmox($credentials);
 
-//$allNodes = $proxmox->get('/nodes');
+$allNodes = $proxmox->get('/nodes');
 
 //print_r($allNodes);
 
