@@ -320,8 +320,32 @@ With this completed, we simply needed to modify our `index.php` file found in `/
   
 With some clever usage of CSS and a `<div>` tag, we had a fully responsive Grafana dashboard accessible from our own Apache webserver. 
 
+## Section 7: Creating a Management Page
+We would like to create a page from which we can manage some of our VMs from. To do this, we chose to install a PHP library to talk to the Proxmox API for us. We chose to use [this library](https://github.com/zzantares/ProxmoxVE). This library requires the use of the [Composer dependency manager](https://getcomposer.org/). This manager installs itself and other PHP libraries on a per-project basis. 
 
-
+Here is what we did to get the API installed and running:
+1. Navigate to the `dashboard` portion of our repository: `cd /var/www/ProxmoxDashboard/src/dashboard/`.
+2. Following [these instructions](https://getcomposer.org/download/) for a local installation, we executed the following commands: (this left a `composer.phar` file in our repository).
+```bash
+php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+php -r "if (hash_file('sha384', 'composer-setup.php') === 'e21205b207c3ff031906575712edab6f13eb0b361f2085f1f1237b7126d785e826a450292b6cfd1d64d92e6563bbde02') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+php composer-setup.php
+php -r "unlink('composer-setup.php');"
+```
+3. We then followed some of the instructions from [this guide](https://getcomposer.org/doc/01-basic-usage.md):
+    - We created a `composer.json` file with the following contents:
+    ```json
+    {
+        "require": {
+            "zzantares/proxmoxve": "~4.0"
+        }
+    }
+    ```
+    - We ran the command `php composer.phar update`. This installs the `zzantares/proxmoxve` libary by creating a `vendor` folder and a `composer.lock` file for storing and managing the installed libraries.
+4. Then we modified the contents of the `manage.php` file (in our repository) to utilize this API.
+    - Helpful API reference links include:
+        - https://pve.proxmox.com/pve-docs/api-viewer/index.html (lists the path to resources as an interactive site.)
+---
 
 <br><br><br><br><br><br>
 <h1>Setting up a Virtual Machine</h1>
