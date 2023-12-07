@@ -17,8 +17,8 @@ Users will be able to:
 - [x] Install a VM Operating System (production environment)
     - [x] Decide on what web server (PHP?)
         - [ ] Provision/Management page (calls Proxmox API to create/destroy VMs)
-            - [ ] Install PHP Composer dependency manager
-            - [ ] Install a Proxmox PHP API library https://github.com/ZzAntares/ProxmoxVE
+            - [x] Install PHP Composer dependency manager
+            - [x] Install a Proxmox PHP API library https://github.com/ZzAntares/ProxmoxVE
             - [ ] Code a PHP page that gives an interface to:
                 - [ ] List VMs that have already been made
                     - [ ] With "delete" buttons to deprovision
