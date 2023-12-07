@@ -336,4 +336,6 @@ Part of our design comes from IT&C 210 Labs 1 - 3. We acknowledge Brandt Redd as
 |-------------|----------------------------------|
 |192.168.20.2 | Proxmox VE - Login on Port 8006  |
 |192.168.20.3 | Ubuntu - Development Server      |
+|192.168.20.3 | :80/phpmyadmin/ - phpMyAdmin     |
+|192.168.20.3 | :3000 - Graphana                 |
 |192.168.3.5  | VPN - Sam                        |
