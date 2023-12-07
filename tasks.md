@@ -3,9 +3,9 @@
         - [ ] Provision/Management page (calls Proxmox API to create/destroy VMs)
             - [ ] Install PHP Composer dependency manager
             - [ ] Install a Proxmox PHP API library https://github.com/ZzAntares/ProxmoxVE
-        - [ ] Install Graphana
-            - [ ] Set up Proxmox visualization using this template/guide: https://www.linuxsysadmins.com/monitoring-proxmox-with-grafana/?amp
-            - [ ] Graphana page
+        - [X] Install Graphana
+            - [X] Set up Proxmox visualization using this template/guide: https://www.linuxsysadmins.com/monitoring-proxmox-with-grafana/?amp
+            - [X] Graphana page
                 - Snapshots look like the way to go for embedding an `<iframe>` https://grafana.com/blog/2023/10/10/how-to-embed-grafana-dashboards-into-web-applications/#snapshot
     - [ ] Configure Fail2Ban to block excessive/unusual activity on port 80
         - [ ] Configure Port forwarding on my network to forward requests on port 80 to the VM
