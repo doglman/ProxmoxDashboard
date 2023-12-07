@@ -3,20 +3,27 @@
         - [ ] Provision/Management page (calls Proxmox API to create/destroy VMs)
             - [ ] Install PHP Composer dependency manager
             - [ ] Install a Proxmox PHP API library https://github.com/ZzAntares/ProxmoxVE
+            - [ ] Code a PHP page that gives an interface to:
+                - [ ] List VMs that have already been made
+                    - [ ] With "delete" buttons to deprovision
+                    - [ ] With "start" and "stop" buttons
+                - [ ] List VMs that are available to be made (perhaps with a form to specify amount of RAM, etc) with a "create" button
         - [X] Install Graphana
             - [X] Set up Proxmox visualization using this template/guide: https://www.linuxsysadmins.com/monitoring-proxmox-with-grafana/?amp
             - [X] Graphana page
                 - Snapshots look like the way to go for embedding an `<iframe>` https://grafana.com/blog/2023/10/10/how-to-embed-grafana-dashboards-into-web-applications/#snapshot
     - [ ] Configure Fail2Ban to block excessive/unusual activity on port 80
-        - [ ] Configure Port forwarding on my network to forward requests on port 80 to the VM
     - [ ] Set up alerting (script that monitors Proxmox API and send emails)
     - [X] Install a MariaDB for holding account info
         - [x] Set up user authentication
             - [ ] Add links to the login screen to go to the register screen?
+            - [ ] Adjust PHP so it doesn't show the content unless someone sets a "authorized" flag in the DB?
     - [ ] Set up SSH on the server
+- [ ] Set up a domain from No-IP (who we used for IT210)
+- [ ] Set up port-forwarding on Sams router for the necessary ports to forward to the VM
 - [x] Set up some VMs for the API to control/monitor
     - [x] Kali?
-    - [ ] BOINC? meh        
+    - [ ] BOINC? meh
 
 
 ## Task Archive
