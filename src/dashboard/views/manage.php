@@ -34,7 +34,8 @@ if (!array_key_exists('logged_in', $_SESSION)) {
         <li> Start a VM </li>
         <li> Stop a VM </li>
     </ul>
-
+    <!-- Generate a table listing the already-existing VMs -->
+    
 
 </body>
 
