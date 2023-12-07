@@ -256,6 +256,73 @@ TODO - STILL NEED TO "SOURCE THIS FILE" ACCORDING TO LAB 3 INSTRUCTIONS
 
 
 
+## Section 5: Installing and Configuring Grafana 
+For the initial installation and setup of Grafana, the tutorial found [here](https://www.linuxsysadmins.com/monitoring-proxmox-with-grafana/) was used as a foundation. Step one of this process was to install and setup InfluxDB however, so following the tutorial found [here](https://www.linuxsysadmins.com/install-influxdb-on-linux-3-easy-steps/), we did the following: 
+
+1. Enabled the Ubunutu repository required to be able to download InfluxDB. 
+2. Downloaded and installed the InfluxDB package.
+3. Enabled the `influxdb` service to run at startup.
+4. Created a firewall exclusion for TCP traffic on port 8086
+
+With InfluxDB now successfully installed, we were ready to create the database within InfluxDB that our Ubuntu VM would be using to house the data it would be monitoring from Proxmox. To do this, we first created an admin user for the InfluxDB installation, after which we created the `mondb` database, as well as the `monuser` user, to whom was given administartive rights over just the `mondb` database.  
+  
+Finally, in order for Proxmox to be able to talk to the InfluxDB database that we had created, we needed to do some minor configuring on both the InfluxDB installation as well as Proxmox itself.
+
+### InfluxDB
+Going to the configuration file found at `/etc/influxdb/influxdb.conf`, the following parameters needed to be enabled:
+```
+[[udp]]
+   enabled = true
+   bind-address = ":8089"
+   database = "mondb"
+   batch-size = 5000
+   batch-timeout = "1s"
+```
+### Proxmox
+From the Proxmox dashboard, we navigated to `Datacenter` -> `Metric Server` -> `Add` -> `InfluxDB`. In the newly created Metric Server, we used the following settings:
+| Create: InfluxDB |           |               |             |
+| ---------------- | -------------- | ------------- | ----------- |
+| Name             | `mondb`        | Enabled       | ☒          |
+| Server           | `192.168.20.3` | Organization  | `proxmox`   |
+| Port             | `8089`         | Bucket        | `proxmox`   |
+| Protocol         | `UDP`          | Token         |             |
+  
+NOTE: The `Server` IP address is the address of the Ubuntu VM which is running the installation of InfluxDB.  
+  
+With InfluxDB and Proxmox now talking to each other, we needed to install and configure Grafana - the tool that would actually be showing our monitoring dashboard. Similar to the initial setup for InfluxDB, we did the following: 
+1. Enabled the Ubunutu repository required to be able to download Grafana. 
+2. Downloaded and installed the Grafana package.
+3. Enabled the `grafana-server` service to run at startup.
+
+With Grafana now installed on the VM, we once again had to do a small amount of configuring. Going to the file found at `/etc/grafana/grafana.ini`, the following changes were made:
+```
+[paths]
+plugins = /var/lib/grafana/plugins
+
+[server]
+protocol = http
+http_port = 3000
+
+[security]
+admin_user = admin
+admin_password = *****
+```
+Now that Grafana had been successfully configured, we could access the Grafana website by navigating to `192.168.20.3:3000`. Logging in using the credentials configured in the previous step, we were able to sign in and begin setting up our dashboard. Navigating to `Connections` -> `Data Sources` within the dashboard, we added InfluxDB as a new datasource. We then configured it to use the HTTP URL `http://192.168.20.3:8086`, and added our `mondb` database using the credentials from the user `monuser`. Upon hitting `Save & test` at the bottom of the page, Grafana informed us that the configuration was successful, and that we had seven measurement types available.  
+  
+With the data now being passed between Proxmox and Grafan without issue, all we needed to do was create a Dashboard as a way to view all of the information. To do this, we navigated to `Dashboards` -> `New` -> `New dashboard` -> `Import a dashboard`. We imported the dashboard found [here](https://grafana.com/grafana/dashboards/10048) by entering the code 10048, after which we were simply asked to enter the name (Proxmox Dashboard), and we had a fully functional Grafana dashboard. 
+
+## Step 6: Embedding Grafana Dashboard into Website
+Now that we had a fully functional Grafana dashboard, we needed to embed it into the Apache webserver. While this was a relatively straightforward process, it is important to note that by default (similar to many other websites), Grafana does not allow its pages to be embedded into any other page, whether it be with a `frame` tag, `iframe` tag, `embed` tag, etc. In order to change this, we followed Grafana's documentation listed [here](https://grafana.com/blog/2023/10/10/how-to-embed-grafana-dashboards-into-web-applications/#snapshot) that tells us to set `allow_embedding` to true within Grafana's configuration file. This meant once again returning to `/etc/grafana/grafana.ini` and making the following change in the `[Security]` section:
+```
+allow_embedding
+```
+With this completed, we simply needed to modify our `index.php` file found in `/var/www/html` to use an `iframe` tag, embedding the dashboard into our own website. While Grafana does support sharing public versions of the Dashboard that still function in realtime, they are still a beta feature and currently don't support any of the data variables we had on our dashboard. Instead, we simply embedded the entire dashboard page as if you were logged into the Grafana website, although enabled the built-in `kiosk` mode and disabled editing to prevent any accidental changes caused by users.  
+  
+With some clever usage of CSS and a `<div>` tag, we had a fully responsive Grafana dashboard accessible from our own Apache webserver. 
+
+
+
+
 <br><br><br><br><br><br>
 <h1>Setting up a Virtual Machine</h1>
 An important next step is to have something for our Proxmox to actually monitor. So we set up a Kali VM using our Kali ISO from class. 
