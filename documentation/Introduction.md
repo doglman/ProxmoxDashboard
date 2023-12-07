@@ -253,6 +253,7 @@ export MYSQL_DATABASE=dashboard
     - http://192.168.20.3/views/login.php
     - http://192.168.20.3/views/register.php
 
+Now that we have the LAMP stack installed and a basic website running, we need to create some pages for our website. The next section will set up a dashboard page to monitor the status of our Proxmox datacenter. The section after that will set up a management page for starting, stopping, provisioning, and deprovisioning VMs. <!-- TODO: ADJUST THE WORDING OF THIS PARAGRAPH ONCE ALL THE HEADINGS AND SECTION DIVISIONS ARE FINALIZED -->
 
 
 ## Section 5: Installing and Configuring Grafana 
