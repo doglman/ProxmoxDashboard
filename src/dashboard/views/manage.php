@@ -91,7 +91,7 @@ $isos = $proxmox->get("/nodes/$firstNode/storage/local/content"); //hard-coding 
   </p>
   <p>
     <h3>Provision a VM</h3>
-    <form action="../actions/provision.php" method="post">
+    <form action="../actions/vm_provision.php" method="post">
       <label for="nodeName"> Node name: </label>
       <input type="text" id="nodeName" name="nodeName" required/>
       <label for="vmid"> VM ID Number: </label>
