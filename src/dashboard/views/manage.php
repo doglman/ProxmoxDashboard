@@ -26,7 +26,10 @@ $proxmox = new Proxmox($credentials);
 
 $allNodes = $proxmox->get('/nodes');
 
-//print_r($allNodes);
+$firstNode = $allNodes['data']["0"]["node"];
+global $vms;
+$vms = $proxmox->get("/nodes/$firstNode/qemu/");
+// print_r($vms);
 
 ?>
 
@@ -46,7 +49,7 @@ $allNodes = $proxmox->get('/nodes');
       <a href="../index.php">Manage Datacenter</a> | <a href="actions/logout_action.php"> LOGOUT </a>
   </nav>
   <h1>Datacenter Management</h1>
-  <p> -- Build management buttons here -- </p>
+  <p> -- Build management buttons here --
     <ul>
         <li> List available VMs </li>
         <li> Provision a VM </li>
@@ -54,7 +57,33 @@ $allNodes = $proxmox->get('/nodes');
         <li> Start a VM </li>
         <li> Stop a VM </li>
     </ul>
-
+  </p>
+  <p>
+    <h3>Provisioned VMs</h3>
+      <table>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+        <?php
+          foreach ( $vms["data"] as &$vm) {
+            $id = $vm["vmid"];
+            $name = $vm["name"];
+            $status = $vm["status"];
+            print("
+              <tr>
+                <td>$id</td>
+                <td>$name</td>
+                <td>$status</td>
+                <td>Start | Stop</td>
+              </tr>
+            ");
+          }
+        ?>
+      </table>  
+  </p>
 
 </body>
 
