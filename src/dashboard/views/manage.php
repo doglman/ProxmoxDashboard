@@ -10,16 +10,13 @@ if (!array_key_exists('logged_in', $_SESSION)) {
 
 // Set up the Proxmox API libraries
 require_once '../vendor/autoload.php';
-//require __DIR__ . '/vendor/autoload.php';
-
 use ProxmoxVE\Proxmox;
 
-$password = getenv("PROXMOX_PASSWORD");
-
+//Acquire credentials from the Apache environment (controlled by the `.env` file)
 $credentials = [
-	'hostname' => '192.168.20.2',
-	'username' => 'root',
-	'password' => $password,
+	'hostname' => getenv("PROXMOX_HOSTNAME"),
+	'username' => getenv("PROXMOX_USERNAME"),
+	'password' => getenv("PROXMOX_PASSWORD"),
 ];
 
 $proxmox = new Proxmox($credentials);
