@@ -20,10 +20,10 @@ Users will be able to:
             - [x] Install PHP Composer dependency manager
             - [x] Install a Proxmox PHP API library https://github.com/ZzAntares/ProxmoxVE
             - [ ] Code a PHP page that gives an interface to:
-                - [ ] List VMs that have already been made
+                - [x] List VMs that have already been made
                     - [ ] With "delete" buttons to deprovision
                     - [ ] With "start" and "stop" buttons
-                - [ ] List VMs that are available to be made (perhaps with a form to specify amount of RAM, etc) with a "create" button
+                - [x] List VMs that are available to be made (perhaps with a form to specify amount of RAM, etc) with a "create" button
         - [X] Install Graphana
             - [X] Set up Proxmox visualization using this template/guide: https://www.linuxsysadmins.com/monitoring-proxmox-with-grafana/?amp
             - [X] Graphana page
