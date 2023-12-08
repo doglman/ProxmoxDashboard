@@ -66,6 +66,9 @@ $isos = $proxmox->get("/nodes/$firstNode/storage/local/content"); //hard-coding 
         <?php
           foreach ( $vms["data"] as &$vm) {
             $id = $vm["vmid"];
+            if ($id == "100") {
+              continue; // Don't output controls for the Dashboard VM. Don't want users accidentally deleting/disabling the site their using.
+            }
             $name = $vm["name"];
             $status = $vm["status"];
             print("
