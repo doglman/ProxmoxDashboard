@@ -54,15 +54,6 @@ $isos = $proxmox->get("/nodes/$firstNode/storage/local/content"); //hard-coding 
       <a href="../index.php">Manage Datacenter</a> | <a href="actions/logout_action.php"> LOGOUT </a>
   </nav>
   <h1>Datacenter Management</h1>
-  <p> -- Build management buttons here --
-    <ul>
-        <li> List available VMs </li>
-        <li> Provision a VM </li>
-        <li> Deprovision a VM </li>
-        <li> Start a VM </li>
-        <li> Stop a VM </li>
-    </ul>
-  </p>
   <p>
     <h3>Provisioned VMs</h3>
       <table>
@@ -81,10 +72,28 @@ $isos = $proxmox->get("/nodes/$firstNode/storage/local/content"); //hard-coding 
               <tr>
                 <td>$id</td>
                 <td>$name</td>
-                <td>$status</td>
-                <td>Start | Stop | Deprovision </td>
-              </tr>
-            ");
+                <td>$status</td>");
+            
+            // Print the extra form info for the action buttons
+            // 1. Determine the current VM state
+            // 2. If it is active, enable "Stop" buttons, disable "Deprovision" and "Start"
+            print("<td>");
+            $outString = "";
+            if ($status == "running") {
+              $outString .= "<input type='submit' value='Start' disabled>";
+              $outString .= "<form action='../actions/vm_stop.php' method='post'> <input type='hidden' name='vmid' value='$id'/> <input type='submit' value='Stop'/> </form>";
+              $outString .= "<input type='submit' value='Delete' disabled>";
+              print($outString);              
+            }
+            else { // i.e. VM is stopped
+              $outString .= "<form action='../actions/vm_start.php' method='post'> <input type='hidden' name='vmid' value='$id'/> <input type='submit' value='Start'/> </form>";
+              $outString .= "<input type='submit' value='Stop' disabled>";
+              $outString .= "<form action='../actions/vm_deprovision.php' method='post'> <input type='hidden' name='vmid' value='$id'/> <input type='submit' value='Delete'/> </form>";
+              print($outString);
+            }
+            print("</td>");
+                // <td>Start | Stop | Deprovision </td>
+            print("</tr>");
           }
         ?>
       </table>  
