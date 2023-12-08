@@ -21,9 +21,10 @@ Users will be able to:
             - [x] Install a Proxmox PHP API library https://github.com/ZzAntares/ProxmoxVE
             - [ ] Code a PHP page that gives an interface to:
                 - [x] List VMs that have already been made
-                    - [ ] With "delete" buttons to deprovision
-                    - [ ] With "start" and "stop" buttons
+                    - [x] With "delete" buttons to deprovision
+                    - [x] With "start" and "stop" buttons
                 - [x] List VMs that are available to be made (perhaps with a form to specify amount of RAM, etc) with a "create" button
+                - [ ] Make it look better with Boostrap components
         - [X] Install Graphana
             - [X] Set up Proxmox visualization using this template/guide: https://www.linuxsysadmins.com/monitoring-proxmox-with-grafana/?amp
             - [X] Graphana page
@@ -34,12 +35,13 @@ Users will be able to:
         - [x] Set up user authentication
             - [ ] Add links to the login screen to go to the register screen?
             - [ ] Adjust PHP so it doesn't show the content unless someone sets a "authorized" flag in the DB?
-    - [ ] Set up SSH on the server
+    - [ ] Set up SSH on the server with public key only encryption
 - [ ] Set up a domain from No-IP (who we used for IT210)
 - [ ] Set up port-forwarding on Sams router for the necessary ports to forward to the VM
 - [x] Set up some VMs for the API to control/monitor
     - [x] Kali?
     - [ ] BOINC? meh
+- [ ] Create an `.env.example` file for documentation purposes
 
 
 ## Task Archive
