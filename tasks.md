@@ -25,6 +25,7 @@ Users will be able to:
                     - [x] With "start" and "stop" buttons
                 - [x] List VMs that are available to be made (perhaps with a form to specify amount of RAM, etc) with a "create" button
                 - [ ] Make it look better with Boostrap components
+                - [ ] Add a URL to the remote console for each VM
         - [X] Install Graphana
             - [X] Set up Proxmox visualization using this template/guide: https://www.linuxsysadmins.com/monitoring-proxmox-with-grafana/?amp
             - [X] Graphana page
