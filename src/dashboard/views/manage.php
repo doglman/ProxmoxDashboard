@@ -24,13 +24,21 @@ $credentials = [
 
 $proxmox = new Proxmox($credentials);
 
+// Get some node information
 $allNodes = $proxmox->get('/nodes');
-
 $firstNode = $allNodes['data']["0"]["node"];
+
+// Get some VM info from the first (and only) node
 global $vms;
 $vms = $proxmox->get("/nodes/$firstNode/qemu/");
 // print_r($vms);
 
+// Get storage content information (i.e. what ISOs are available)
+// $nodeStorages = $proxmox->get("/nodes/$firstNode/storage");
+// print_r($nodeStorages);
+global $isos;
+$isos = $proxmox->get("/nodes/$firstNode/storage/local/content"); //hard-coding "local" as the drive with ISOs on it
+// print_r($isos);
 ?>
 
 <!DOCTYPE html>
@@ -77,12 +85,33 @@ $vms = $proxmox->get("/nodes/$firstNode/qemu/");
                 <td>$id</td>
                 <td>$name</td>
                 <td>$status</td>
-                <td>Start | Stop</td>
+                <td>Start | Stop | Deprovision </td>
               </tr>
             ");
           }
         ?>
       </table>  
+  </p>
+  <p>
+    <h3>Provision a VM</h3>
+    <form action="../actions/provision.php" method="post">
+      <label for="nodeName"> Node name: </label>
+      <input type="text" id="nodeName" name="nodeName" required/>
+      <label for="vmid"> VM ID Number: </label>
+      <input type="number" id="vmid" name="vmid" required/>
+      <label for="iso"> ISO to install: </label>
+      <select name="iso">
+          <?php
+            foreach ($isos["data"] as &$iso) {
+              if ($iso["format"] == "iso") {
+                $volume = $iso["volid"];
+                print("<option 'value=$volume'>$volume</option>");
+              };
+            }
+          ?>
+      </select>
+      <input type="submit" value="CREATE"/>
+    </form>
   </p>
 
 </body>
