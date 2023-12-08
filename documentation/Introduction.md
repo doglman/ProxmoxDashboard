@@ -237,7 +237,7 @@ sudo service apache2 status # Should indicate "active (running)"
         | `username`  | `VARCHAR` | `255`          | ...             | Unique  |  ☐  |  ...  |
         | `password`  | `VARCHAR` | `255`          | ...             | ...     |  ☐  |  ...  |
         | `logged_in` | `BOOLEAN` |                | `As defined: 0` | ...     |  ☐  |  ...  |
-4. Now we need to provide these credentials to apache, so that it can modify the database as users create accounts and log in. We did this by creating a `.env` file in our project's folders with the following contents:
+4. Now we need to provide these credentials to apache, so that it can modify the MariaDB database as users create accounts and log in. We did this by creating a `.env` file in our project's folders with the following contents:
 ```env
 export MYSQL_SERVERNAME=localhost
 export MYSQL_USER=developer
@@ -247,13 +247,13 @@ export MYSQL_DATABASE=dashboard
     - We then created an entry in the apache configuration so it knows about these variables. We did this by executing the `apache2_env_setup.sh` script that is included in this repository, in the same folder as where the `.env` file is stored.
     - In case you run into any issues after this step, we used the following resources to diagnose:
         - We can view any PHP errors encountered by apache by executing the command `tail -f /var/log/apache2/error.log`
-<!-- I finally got the sourcing working. I was missing a line in my .env file. I was able to diagnose by through the following commands:
-Going to the `http://192.168.20.3/actions/health_check.php` 
--->
-TODO - STILL NEED TO "SOURCE THIS FILE" ACCORDING TO LAB 3 INSTRUCTIONS 
+        - We can view if Apache/PHP can read those variables and connect to our database by using the `health_check.php` file in our repository. So for our setup, we could navigate to `http://192.168.20.3/actions/health_check.php` 
+5. After restarting Apache wth `sudo service apache2 restart`, we are now able to register users and log into the website with the PHP code from our repository. Here are some of the implemented URLs:
+    - http://192.168.20.3/ (main screen. Redirects to login if a user isn't logged in)
+    - http://192.168.20.3/views/login.php
+    - http://192.168.20.3/views/register.php
 
-<!-- I created a test account and it worked either way so sweet.-->
-
+Now that we have the LAMP stack installed and a basic website running, we need to create some pages for our website. The next section will set up a dashboard page to monitor the status of our Proxmox datacenter. The section after that will set up a management page for starting, stopping, provisioning, and deprovisioning VMs. <!-- TODO: ADJUST THE WORDING OF THIS PARAGRAPH ONCE ALL THE HEADINGS AND SECTION DIVISIONS ARE FINALIZED -->
 
 
 ## Section 5: Installing and Configuring Grafana 
@@ -320,8 +320,32 @@ With this completed, we simply needed to modify our `index.php` file found in `/
   
 With some clever usage of CSS and a `<div>` tag, we had a fully responsive Grafana dashboard accessible from our own Apache webserver. 
 
+## Section 7: Creating a Management Page
+We would like to create a page from which we can manage some of our VMs from. To do this, we chose to install a PHP library to talk to the Proxmox API for us. We chose to use [this library](https://github.com/zzantares/ProxmoxVE). This library requires the use of the [Composer dependency manager](https://getcomposer.org/). This manager installs itself and other PHP libraries on a per-project basis. 
 
-
+Here is what we did to get the API installed and running:
+1. Navigate to the `dashboard` portion of our repository: `cd /var/www/ProxmoxDashboard/src/dashboard/`.
+2. Following [these instructions](https://getcomposer.org/download/) for a local installation, we executed the following commands: (this left a `composer.phar` file in our repository).
+```bash
+php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+php -r "if (hash_file('sha384', 'composer-setup.php') === 'e21205b207c3ff031906575712edab6f13eb0b361f2085f1f1237b7126d785e826a450292b6cfd1d64d92e6563bbde02') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+php composer-setup.php
+php -r "unlink('composer-setup.php');"
+```
+3. We then followed some of the instructions from [this guide](https://getcomposer.org/doc/01-basic-usage.md):
+    - We created a `composer.json` file with the following contents:
+    ```json
+    {
+        "require": {
+            "zzantares/proxmoxve": "~4.0"
+        }
+    }
+    ```
+    - We ran the command `php composer.phar update`. This installs the `zzantares/proxmoxve` libary by creating a `vendor` folder and a `composer.lock` file for storing and managing the installed libraries.
+4. Then we modified the contents of the `manage.php` file (in our repository) to utilize this API.
+    - Helpful API reference links include:
+        - https://pve.proxmox.com/pve-docs/api-viewer/index.html (lists the path to resources as an interactive site.)
+---
 
 <br><br><br><br><br><br>
 <h1>Setting up a Virtual Machine</h1>
