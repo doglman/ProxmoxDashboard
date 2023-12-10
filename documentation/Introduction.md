@@ -244,10 +244,10 @@ export MYSQL_USER=developer
 export MYSQL_PASSWORD='(the password you set earlier for mariadb)'
 export MYSQL_DATABASE=dashboard
 ```
-    - We then created an entry in the apache configuration so it knows about these variables. We did this by executing the `apache2_env_setup.sh` script that is included in this repository, in the same folder as where the `.env` file is stored.
-    - In case you run into any issues after this step, we used the following resources to diagnose:
-        - We can view any PHP errors encountered by apache by executing the command `tail -f /var/log/apache2/error.log`
-        - We can view if Apache/PHP can read those variables and connect to our database by using the `health_check.php` file in our repository. So for our setup, we could navigate to `http://192.168.20.3/actions/health_check.php` 
+- We then created an entry in the apache configuration so it knows about these variables. We did this by executing the `apache2_env_setup.sh` script that is included in this repository, in the same folder as where the `.env` file is stored.
+- In case you run into any issues after this step, we used the following resources to diagnose:
+    - We can view any PHP errors encountered by apache by executing the command `tail -f /var/log/apache2/error.log`
+    - We can view if Apache/PHP can read those variables and connect to our database by using the `health_check.php` file in our repository. So for our setup, we could navigate to `http://192.168.20.3/actions/health_check.php` 
 5. After restarting Apache wth `sudo service apache2 restart`, we are now able to register users and log into the website with the PHP code from our repository. Here are some of the implemented URLs:
     - http://192.168.20.3/ (main screen. Redirects to login if a user isn't logged in)
     - http://192.168.20.3/views/login.php
@@ -345,11 +345,12 @@ php -r "unlink('composer-setup.php');"
 4. Then we modified the contents of the `manage.php` file (in our repository) to utilize this API.
     - Helpful API reference links include:
         - https://pve.proxmox.com/pve-docs/api-viewer/index.html (lists the path to resources as an interactive site.)
----
+5. As needed, we constructed scripts, storing them in `/actions/`, to create the different functions that we needed for our app.
 
-<br><br><br><br><br><br>
-<h1>Setting up a Virtual Machine</h1>
-An important next step is to have something for our Proxmox to actually monitor. So we set up a Kali VM using our Kali ISO from class. 
+For additional info, see the source code in this repository.
+
+## Section 8: (Optional) Creating VMs to manage
+As a last step, we created some VMs for our dashboard to monitor and control. We set up a Kali VM.
 
 # Appendix
 Part of our design comes from IT&C 210 Labs 1 - 3. We acknowledge Brandt Redd as the provider of those labs.
