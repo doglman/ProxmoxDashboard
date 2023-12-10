@@ -30,7 +30,7 @@ Users will be able to:
             - [X] Set up Proxmox visualization using this template/guide: https://www.linuxsysadmins.com/monitoring-proxmox-with-grafana/?amp
             - [X] Graphana page
                 - Snapshots look like the way to go for embedding an `<iframe>` https://grafana.com/blog/2023/10/10/how-to-embed-grafana-dashboards-into-web-applications/#snapshot
-    - [ ] Configure Fail2Ban to block excessive/unusual activity on port 80
+    - [ ] Configure Fail2Ban to block excessive/unusual activity on port 80. (IT210 Lab 5b)
     - [ ] Set up alerting (script that monitors Proxmox API and send emails)
     - [X] Install a MariaDB for holding account info
         - [x] Set up user authentication
