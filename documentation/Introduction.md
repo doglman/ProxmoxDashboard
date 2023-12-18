@@ -314,7 +314,7 @@ With the data now being passed between Proxmox and Grafan without issue, all we 
 ## Step 6: Embedding Grafana Dashboard into Website
 Now that we had a fully functional Grafana dashboard, we needed to embed it into the Apache webserver. While this was a relatively straightforward process, it is important to note that by default (similar to many other websites), Grafana does not allow its pages to be embedded into any other page, whether it be with a `frame` tag, `iframe` tag, `embed` tag, etc. In order to change this, we followed Grafana's documentation listed [here](https://grafana.com/blog/2023/10/10/how-to-embed-grafana-dashboards-into-web-applications/#snapshot) that tells us to set `allow_embedding` to true within Grafana's configuration file. This meant once again returning to `/etc/grafana/grafana.ini` and making the following change in the `[Security]` section:
 ```
-allow_embedding
+allow_embedding = true
 ```
 With this completed, we simply needed to modify our `index.php` file found in `/var/www/html` to use an `iframe` tag, embedding the dashboard into our own website. While Grafana does support sharing public versions of the Dashboard that still function in realtime, they are still a beta feature and currently don't support any of the data variables we had on our dashboard. Instead, we simply embedded the entire dashboard page as if you were logged into the Grafana website, although enabled the built-in `kiosk` mode and disabled editing to prevent any accidental changes caused by users.  
   
@@ -351,6 +351,29 @@ For additional info, see the source code in this repository.
 
 ## Section 8: (Optional) Creating VMs to manage
 As a last step, we created some VMs for our dashboard to monitor and control. We set up a Kali VM.
+
+## Section 9: Enabling Grafana Alerts
+We wanted to be able to receive customized alerts for certain events going on with our VMs or with the Proxmox installation. Lucily, Grafana has a built-in alert system utilizing the metrics it collects for its dashboard, meaning we wouldn't need to worry about collecting data a second time just for the purpose of alerts. To create a functional alert system within Grafana, there were two main tasks we needed to complete:
+1. Enable a "contact point" (a way for Grafana to send out emails)
+2. Configure a rule by which Grafana can determine when to send alerts
+
+### Contact Point
+This was, for the most part, very straightforward. Returning to the Grafana configuration file we modified in sections 5 and 6 (located in `/etc/grafana/grafana.ini`), we first needed to adjust some settings in the `smtp` section. The changes were as follows:
+```
+enabled = true
+host = smtp.gmail.com:587
+user = *****@gmail.com
+password = "*****"
+skip_verify = true
+from_address = *****@gmail.com
+from_name = Grafana
+```
+Using this configuration, a personal Gmail account can be used as the email address to send out alerts. However, it is important to note that Google *does not* allow integration by default. Users who want to use a Gmail account need to first enable two-factor authentication within their account security settings (found [here](https://myaccount.google.com/signinoptions/two-step-verification/enroll-welcome)), after which they will need to locate "App passwords" at the bottom of the page and create a password specifically for Grafana. Using this application-specific password should allow Grafana to access and use the Gmail account without issue.  
+  
+With the Grafana configuration file successfully updated, we then needed to actually setup the "contact point" within the Grafana web interface itself. Navigtating back to `192.168.20.3:3000`, the section we needed to go to was located in `Alerting` -> `Contact points` -> `Add contact point`. This was where we were able to designate who the recipients would be for the alert emails, as well as having the option to adjust a few more miscellaneous settings. 
+
+### Alert Rule
+With the alert delivery system now fully functional, we simply needed to configure Grafana to know when to send alerts. To create new alert rules, we navigated to `Alerting` -> `Alert rules` -> `New alert rules`. This brought up a very robust alert creation tool. The first step was to write a query for the available data sources in the InfluxDB database used to house the information displayed by the Grafana dashboard. This allowed us to isolate what metric we want to monitor to determine when to send alerts. We then created a rule that would act based on the retrieved data. With the data successfully queried and the alert rule configured, we were able to test and confirm that email alerts were sent correctly. In our case, this meant that whenever a VM is powered on or powered off, and email alert is sent to the designed list of email addresses. 
 
 # Appendix
 Part of our design comes from IT&C 210 Labs 1 - 3. We acknowledge Brandt Redd as the provider of those labs.
