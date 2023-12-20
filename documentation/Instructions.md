@@ -388,3 +388,11 @@ Part of our design comes from IT&C 210 Labs 1 - 3. We acknowledge Brandt Redd as
 |192.168.20.3 | :80/phpmyadmin/ - phpMyAdmin     |
 |192.168.20.3 | :3000 - Graphana                 |
 |192.168.3.5  | VPN - Sam                        |
+
+
+<!--
+Future work:
+- I would have liked to adjust the partitioning on the drive with Proxmox installed. The way it is currently installed, about half of the drive is for Proxmox (and uploaded ISOs) and the other half is for VMs, which is wasted space (since we're storing VMs on the 2nd SSD instead).
+I found this forum post about trying to fix such an issue: https://forum.proxmox.com/threads/need-to-delete-local-lvm-and-reuse-the-size.34087/
+
+ -->
