@@ -280,6 +280,7 @@ Going to the configuration file found at `/etc/influxdb/influxdb.conf`, the foll
 ```
 ### Proxmox
 From the Proxmox dashboard, we navigated to `Datacenter` -> `Metric Server` -> `Add` -> `InfluxDB`. In the newly created Metric Server, we used the following settings:
+
 | Create: InfluxDB |           |               |             |
 | ---------------- | -------------- | ------------- | ----------- |
 | Name             | `mondb`        | Enabled       | ☒          |
